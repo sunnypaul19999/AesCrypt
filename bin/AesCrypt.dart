@@ -6,56 +6,43 @@ void aboutAuthor(){
     print("Made By Sunny Paul");
 }
 
-
-
 class UI{
     String path;
     final key;
-    UI(this.key);
-    
-    void takePath(){
-        print("Enter Directory OR File location:");
-        path = stdin.readLineSync();
+    List<String> filelist,dirlist;
+    UI(this.key){
+        filelist = List();
+        dirlist = List();
     }
     
+    void takePath() => path = stdin.readLineSync();
+    
     void menuEnterData({@required String operation}){
-        print("1.Single File/Directory 2.Multiple File/Directory");
-        var choice = stdin.readLineSync()[0];
-        takePath();
-        
-        switch(choice){
-            case '1': 
-                if(FileSystemEntity.isFileSync(path)){
-                    print("this is a file");//debug code
-                    switch(operation){
-                        case 'encrypt':
-                            FileManagement(key: key,doEncryption: true).processFile(path);
-                            break;
-                            
-                        case 'decrypt':
-                            FileManagement(key: key,doDecryption: true).processFile(path);
-                            break;
-                    }
-                }
-                if(FileSystemEntity.isDirectorySync(path)){
-                    print("this is a directory");//debug code
-                    switch(operation){
-                        case 'encrypt':
-                        DirectoryMangement.directory(dir: Directory(path),key: key,doEncryption: true).processDirectory();
-                        break;
-                            
-                        case 'decrypt':
-                        DirectoryMangement.directory(dir: Directory(path),key: key,doDecryption: true).processDirectory();
-                        break;
-                    }
-                }
-                break;
-            case '2':
-                print('this function is not ready yet!!!');
-                break;
-            default:
-                print("not a valid input..");
+        print("-->enter files/directories");
+        print("-->enter q when you are done");
+        while(true){
+            takePath();
+            try{
+                if(path.length==1 && path=='q') break;
+                else if(FileSystemEntity.isFileSync(path)) {print("this a file"); filelist.add(path);}
+                else if(FileSystemEntity.isDirectorySync(path)) dirlist.add(path);   
+                else throw Exception('$path not a file or directory');
+            }catch(e,s){
+                print(e.message);
+            }
+
         }
+        switch(operation){
+            case 'encrypt':
+                if(!filelist.isEmpty)  FileManagement<String>(key: key,doEncryption: true).processFileList(filelist);
+                if(!filelist.isEmpty)  DirectoryManagement(dirList: dirlist,key: key,doEncryption: true).processDirectory();
+                break;
+            case 'decrypt':
+                if(!filelist.isEmpty) FileManagement<String>(key: key,doDecryption: true).processFileList(filelist);
+                if(!filelist.isEmpty) DirectoryManagement(dirList: dirlist,key: key,doDecryption: true).processDirectory();
+                break;    
+        }
+        
     }
     
     void menuDecideOperation(){

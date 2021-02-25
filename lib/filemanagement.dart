@@ -7,29 +7,26 @@ import 'package:AesCrypt/cryptographiclogic.dart';
 class FileManagement<V>{
     final doEncryption,doDecryption;
     EncryptDecrypt encryptDecryptOb; //why this field cannot be made final
-    String filepath;
     
-    FileManagement({@required String key,this.doEncryption=false,this.doDecryption=false})
-     {
+    FileManagement({@required final key,this.doEncryption=false,this.doDecryption=false})
+    {
          encryptDecryptOb = EncryptDecrypt(key: key,aesCryptObject: AesCrypt());
-     }
-    
-    bool isFileSync(String check)=> (check[0]=='F')? true : false;
-    
-    void processFileList(List<V> listOfFiles){
-         for(V file in listOfFiles){
-             if(isFileSync(file.toString())){
-                 if(file is FileSystemEntity) filepath = "${file.toString().substring(7,file.toString().length-1)}";
-                 else if(file is String) filepath=file;
-                 processFile(filepath);
-            }
+    }
+        
+    void processFileList(final filelist){
+        String filepath;
+        for(V file in filelist){
+            if(file is FileSystemEntity) filepath = "${file.toString().substring(7,file.toString().length-1)}";
+            else if(file is String) {filepath=file; print('---$filepath');}
+            else throw Exception('not a valid type filemangement can take only types FileSytemEntity or String');
+            if(ifNotAlreadyEncrypted) processFile(filepath);
         } 
     }
     
     void processFile(String filepath){
         if(doEncryption) processFileForEncryption(filepath);
         else if(doDecryption) processFileForDecryption(filepath);
-        else print("you have to select ANY ONE operation");
+        else throw Exception("no operation is selected to process the file select either encryption or decryption");
     }
     
     void processFileForEncryption(String filepath) async{ 
@@ -51,17 +48,15 @@ class FileManagement<V>{
 
 
 
-class DirectoryMangement{
-    final Directory dir;
-    List<FileSystemEntity> listOfFiles;
-    FileManagement<FileSystemEntity> filemanagement;
-    DirectoryMangement.directory({@required this.dir,@required String key,bool doEncryption=false,bool doDecryption=false})
+class DirectoryManagement<V>{
+    final dirList;
+    FileManagement filemanagement;
+    DirectoryManagement({@required this.dirList,@required String key,bool doEncryption=false,bool doDecryption=false})
     {
         filemanagement = FileManagement<FileSystemEntity>(key: key,doEncryption: doEncryption,doDecryption: doDecryption);
-        listOfFiles = dir.listSync(recursive: true);
     }
-    
+
     void processDirectory(){
-        filemanagement.processFileList(listOfFiles);
+        for(final dir in dirList)  filemanagement.processFileList(Directory(dir).listSync(recursive: true));
     }
 }

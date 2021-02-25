@@ -10,7 +10,6 @@ abstract class AES{
     const AES({@required this.key,@required this.aesCryptObject});
 }
 
-
 class EncryptDecrypt extends AES{
     const EncryptDecrypt({String key,AesCrypt aesCryptObject}): super(key: key,aesCryptObject: aesCryptObject);
     
@@ -25,7 +24,6 @@ class EncryptDecrypt extends AES{
         }
         return Future<String>.value("something went wrong while encrypting $filepath");
     }
-    
     
     Future<String> decryptThis(String filepath) async {
         aesCryptObject.setPassword(key);
