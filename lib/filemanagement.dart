@@ -19,7 +19,7 @@ class FileManagement<V>{
             if(file is FileSystemEntity) filepath = "${file.toString().substring(7,file.toString().length-1)}";
             else if(file is String) {filepath=file; print('---$filepath');}
             else throw Exception('not a valid type filemangement can take only types FileSytemEntity or String');
-            if(ifNotAlreadyEncrypted) processFile(filepath);
+            processFile(filepath);
         } 
     }
     
