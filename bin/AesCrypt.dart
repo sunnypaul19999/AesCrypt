@@ -35,11 +35,11 @@ class UI{
         switch(operation){
             case 'encrypt':
                 if(!filelist.isEmpty)  FileManagement<String>(key: key,doEncryption: true).processFileList(filelist);
-                if(!filelist.isEmpty)  DirectoryManagement(dirList: dirlist,key: key,doEncryption: true).processDirectory();
+                if(!dirlist.isEmpty)  DirectoryManagement(dirList: dirlist,key: key,doEncryption: true).processDirectory();
                 break;
             case 'decrypt':
                 if(!filelist.isEmpty) FileManagement<String>(key: key,doDecryption: true).processFileList(filelist);
-                if(!filelist.isEmpty) DirectoryManagement(dirList: dirlist,key: key,doDecryption: true).processDirectory();
+                if(!dirlist.isEmpty) DirectoryManagement(dirList: dirlist,key: key,doDecryption: true).processDirectory();
                 break;    
         }
         
