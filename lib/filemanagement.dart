@@ -19,8 +19,8 @@ class FileManagement<V>{
     void processFileList(List<V> listOfFiles){
          for(V file in listOfFiles){
              if(isFileSync(file.toString())){
-                 if(V is FileSystemEntity) filepath = "${file.toString().substring(7,file.toString().length-1)}";
-                 if(V is String) filepath=file.toString();
+                 if(file is FileSystemEntity) filepath = "${file.toString().substring(7,file.toString().length-1)}";
+                 else if(file is String) filepath=file;
                  processFile(filepath);
             }
         } 

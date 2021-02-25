@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:meta/meta.dart';
 import 'package:AesCrypt/filemanagement.dart';
-import 'package:AesCrypt/cryptographiclogic.dart';
 
 void aboutAuthor(){
     print("Made By Sunny Paul");
