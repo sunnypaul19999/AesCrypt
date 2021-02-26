@@ -16,8 +16,11 @@ class FileManagement<V>{
     void processFileList(final filelist){
         String filepath;
         for(V file in filelist){
-            if(file is FileSystemEntity) filepath = "${file.toString().substring(7,file.toString().length-1)}";
-            else if(file is String) {filepath=file; print('---$filepath');}
+            if(file is FileSystemEntity){
+                filepath = "${file.toString().substring(7,file.toString().length-1)}";
+                if(!FileSystemEntity.isFileSync(filepath)) continue;
+            }
+            else if(file is String) filepath=file;
             else throw Exception('not a valid type filemangement can take only types FileSytemEntity or String');
             processFile(filepath);
         } 
@@ -56,7 +59,7 @@ class DirectoryManagement<V>{
         filemanagement = FileManagement<FileSystemEntity>(key: key,doEncryption: doEncryption,doDecryption: doDecryption);
     }
 
-    void processDirectory(){
-        for(final dir in dirList)  filemanagement.processFileList(Directory(dir).listSync(recursive: true));
+    void processDirectory({bool recursive=false}){
+        for(final dir in dirList)  filemanagement.processFileList(Directory(dir).listSync(recursive: recursive));
     }
 }

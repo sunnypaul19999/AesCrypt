@@ -35,30 +35,29 @@ class UI{
         switch(operation){
             case 'encrypt':
                 if(!filelist.isEmpty)  FileManagement<String>(key: key,doEncryption: true).processFileList(filelist);
-                if(!dirlist.isEmpty)  DirectoryManagement(dirList: dirlist,key: key,doEncryption: true).processDirectory();
+                if(!dirlist.isEmpty)  DirectoryManagement(dirList: dirlist,key: key,doEncryption: true).processDirectory(recursive: false);
                 break;
             case 'decrypt':
                 if(!filelist.isEmpty) FileManagement<String>(key: key,doDecryption: true).processFileList(filelist);
-                if(!dirlist.isEmpty) DirectoryManagement(dirList: dirlist,key: key,doDecryption: true).processDirectory();
+                if(!dirlist.isEmpty) DirectoryManagement(dirList: dirlist,key: key,doDecryption: true).processDirectory(recursive: false);
                 break;    
         }
         
     }
     
     void menuDecideOperation(){
-        print("1.Encrypt 2.Decrypt");
-        var choice = stdin.readLineSync()[0];
-        switch(choice){
-            case '1':
-                menuEnterData(operation: 'encrypt');
-                break;
-            case '2':
-                menuEnterData(operation: 'decrypt');
-                break;
-            default:
-                print("not valid choice...");
-        }
-    }
+            print("1.Encrypt 2.Decrypt");
+            var choice = stdin.readLineSync()[0];
+            switch(choice){
+                case '1':
+                    menuEnterData(operation: 'encrypt');
+                    break;
+                case '2':
+                    menuEnterData(operation: 'decrypt');
+                    break;
+                default:
+                    print("not valid choice...");
+            }
 }
 
 void main(){
