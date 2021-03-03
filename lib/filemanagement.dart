@@ -12,7 +12,11 @@ class FileManagement<V>{
     {
          encryptDecryptOb = EncryptDecrypt(key: key,aesCryptObject: AesCrypt());
     }
-        
+    bool checkIfFileTypeAes(filepath){
+        if(filepath.endsWith('.aes')) 
+            return true;
+        return false;
+    }
     void processFileList(final filelist){
         String filepath;
         for(V file in filelist){
@@ -22,7 +26,11 @@ class FileManagement<V>{
             }
             else if(file is String) filepath=file;
             else throw Exception('not a valid type filemangement can take only types FileSytemEntity or String');
-            processFile(filepath);
+            if(checkIfFileTypeAes(filepath) && doEncryption){ 
+                print('skipping over aes filetypes --> $filepath');
+                continue;
+            }
+            else processFile(filepath);
         } 
     }
     

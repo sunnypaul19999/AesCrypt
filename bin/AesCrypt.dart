@@ -58,6 +58,7 @@ class UI{
                 default:
                     print("not valid choice...");
             }
+    }
 }
 
 void main(){
